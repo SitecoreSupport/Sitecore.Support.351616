@@ -63,13 +63,18 @@ XA.component.search.facet.resultsfilter = (function ($, document) {
 
 
             for (i = 0; i < sig.length; i++) {
-                if (data.Facets.length > 0 && (data.Signature === sig[i])) {
-                    var facedData = _.find(data.Facets, function (f) {
-                        return f.Key.toLowerCase() === inst.get('dataProperties').f.toLowerCase();
-                    });
-                    if (facedData !== undefined) {
-                        this.sortFacetArray(sortOrder, facedData.Values);
-                        inst.set({ resultData: facedData });
+                if (data.Signature === sig[i]) {
+                    if (data.Facets.length > 0) {
+                        var facedData = _.find(data.Facets, function (f) {
+                            return f.Key.toLowerCase() === inst.get('dataProperties').f.toLowerCase();
+                        });
+                        if (facedData !== undefined) {
+                            this.sortFacetArray(sortOrder, facedData.Values);
+                            inst.set({ resultData: facedData });
+                        }
+                    }
+                    else {
+                        inst.set({ resultData: [] }); //fix for issue 351616
                     }
                 }
             }
